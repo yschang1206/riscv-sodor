@@ -56,7 +56,7 @@ BPPATH?=$(common)
 CXXFLAGS := $(CXXFLAGS) -O1 -std=c++11  -g
 
 CXXSRCS := SimDTM
-CXXFLAGS := $(CXXFLAGS) -I$(srcDir)/emulator/common -I$(srcDir)/riscv-fesvr -I/usr/riscv/include
+CXXFLAGS := $(CXXFLAGS) -I$(srcDir)/emulator/common -I$(srcDir)/riscv-fesvr
 CXXDEBUGFLAGS := -DDEBUG
 
 LDFLAGS := $(LDFLAGS) -L$(buildLibDir) -Wl,-rpath,$(buildLibDir) -L. -lpthread
@@ -98,7 +98,7 @@ VERILATOR_FLAGS := --top-module Top \
   -O3 -CFLAGS "$(CXXFLAGS) $(LDFLAGS) -DVERILATOR -include $(srcDir)/emulator/common/verilator.h"
 emulator: generated-src/Top.v $(srcDir)/emulator/common/emulator.cpp SimDTM.o $(srcDir)/vsrc/AsyncReadMem.sv $(srcDir)/vsrc/SyncMem.sv $(srcDir)/vsrc/SimDTM.v
 	$(VERILATOR) $(VERILATOR_FLAGS) \
-	-o $(generated_dir)/$@ $< $(srcDir)/vsrc/SimDTM.v -LDFLAGS "$(LDFLAGS)" $(srcDir)/emulator/common/emulator.cpp $(buildLibDir)/libfesvr.so $(generated_dir)/SimDTM.o
+	-o $(generated_dir)/$@ $< $(srcDir)/vsrc/SimDTM.v -LDFLAGS "$(LDFLAGS)" $(srcDir)/emulator/common/emulator.cpp $(srcDir)/riscv-fesvr/build/libfesvr.so $(generated_dir)/SimDTM.o
 	$(MAKE) -C $(generated_dir)/obj_dir -f VTop.mk
  
 # $(TRACER).o: $(TRACERPATH)/$(TRACER).h $(TRACERPATH)/$(TRACER).cpp generated-src/Top.h
@@ -115,7 +115,7 @@ emulator: generated-src/Top.v $(srcDir)/emulator/common/emulator.cpp SimDTM.o $(
 
 emulator-debug: generated-src/Top.v $(srcDir)/emulator/common/emulator.cpp SimDTM.o $(srcDir)/vsrc/AsyncReadMem.sv $(srcDir)/vsrc/SyncMem.sv $(srcDir)/vsrc/SimDTM.v
 	$(VERILATOR) $(VERILATOR_FLAGS) --trace \
-	-o $(generated_dir)/$@ $< $(srcDir)/vsrc/SimDTM.v -LDFLAGS "$(LDFLAGS)" $(srcDir)/emulator/common/emulator.cpp $(buildLibDir)/libfesvr.so $(generated_dir)/SimDTM.o
+	-o $(generated_dir)/$@ $< $(srcDir)/vsrc/SimDTM.v -LDFLAGS "$(LDFLAGS)" $(srcDir)/emulator/common/emulator.cpp $(srcDir)/riscv-fesvr/build/libfesvr.so $(generated_dir)/SimDTM.o
 	$(MAKE) -C $(generated_dir)/obj_dir -f VTop.mk
  
 clean:
