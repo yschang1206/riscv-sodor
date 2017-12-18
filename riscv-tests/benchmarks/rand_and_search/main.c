@@ -28,14 +28,6 @@
  */
 #define SEARCH_VER 0
 
-/**
- * COUNT_CYLE
- * 0: count rand() + search()
- * 1: count rand()
- * 2: count search()
- */
-#define COUNT_CYCLE 0
-
 void rand(int32_t *a, int32_t len, int32_t seed);
 int32_t search(int32_t *a, int32_t len, int32_t target);
 
@@ -60,7 +52,7 @@ int32_t search_0(int32_t *a, int32_t len, int32_t target)
 #define NUM_SRCS 20
 #define NUM_TGTS 10
 int32_t srcs_c[NUM_SRCS], srcs_asm[NUM_SRCS];
-int32_t tgts[NUM_TGTS] = {100, 300, 99, 1, 0, -1, 255, 256, 123, 247};
+int32_t tgts[NUM_TGTS] = {94, 300, 129, 1, 0, 2, 104, 256, 123, 65};
 int32_t idxes_c[NUM_TGTS], idxes_asm[NUM_TGTS];
 
 int compare(int32_t *nums_c, int32_t *nums_asm, int len, char *s)
@@ -79,6 +71,13 @@ int compare(int32_t *nums_c, int32_t *nums_asm, int len, char *s)
 int main(void)
 {
 	const int32_t seed = 123;
+	uintptr_t m, n;
+
+	/* print configurations */
+	printf("   ********************************\n");
+	printf("   **  RAND   version = %d        **\n", RAND_VER);
+	printf("   **  SEARCH version = %d        **\n", SEARCH_VER);
+	printf("   ********************************\n\n");
 
 	/* generating golden results, i.e., srcs_c and idxes_c */
 	rand_0(srcs_c, NUM_SRCS, seed);
@@ -86,28 +85,29 @@ int main(void)
 		idxes_c[i] = search_0(srcs_c, NUM_SRCS, tgts[i]);
 
 	/* run your rand() and compare with the golden result (srcs_c) */
+	m = read_csr(mcycle);
 	rand(srcs_asm, NUM_SRCS, seed);
+	n = read_csr(mcycle);
 	printf("Comparing your rand() result with golden result\n");
 	if (compare(srcs_c, srcs_asm, NUM_SRCS, "rand") != 0) {
 		printf("Your rand() is wrong\n");
 		return 1;
+	} else {
+		printf("Your rand() is correct, cycle count = %lu\n\n", (long)(n - m));
 	}
 
 	/* run your search() and compare with the golden result (idxes_c) */
+	m = read_csr(mcycle);
 	for (int i = 0; i < NUM_TGTS; i++)
 		idxes_asm[i] = search(srcs_asm, NUM_SRCS, tgts[i]);
+	n = read_csr(mcycle);
 	printf("Comparing your search() result with golden result\n");
 	if (compare(idxes_c, idxes_asm, NUM_TGTS, "search") != 0) {
 		printf("Your search() is wrong\n");
 		return 1;
+	} else {
+		printf("Your search() is correct, cycle count = %lu\n\n", (long)(n - m));
 	}
-
-	/* print configurations */
-	printf("   ********************************\n");
-	printf("   **  RAND   version = %d        **\n", RAND_VER);
-	printf("   **  SEARCH version = %d        **\n", SEARCH_VER);
-	printf("   **  COUNT_CYCLE    = %d        **\n", COUNT_CYCLE);
-	printf("   ********************************\n");
 
 	return 0;
 }

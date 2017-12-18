@@ -127,12 +127,17 @@ int main(int argc, char** argv)
 
    if (failure)
    {
-      fprintf(logfile, "*** FAILED *** (%s) after %lld cycles\n", failure, (long long)trace_count);
+      fprintf(stdout, "*** FAILED *** (%s) after %lld cycles\n", failure, (long long)trace_count);
       return -1;
    }
    else if (dtm->exit_code() <= 1)
    {
-      fprintf(logfile, "*** PASSED ***\n");
+     fprintf(stdout,   "   **********************************************************\n\n");
+     fprintf(stdout,   "            #          ###################          _   _    \n");
+     fprintf(stdout,   "           #           #                 #          *   *    \n");
+     fprintf(stdout,   "      #   #            #     CORRECT     #            |      \n");
+     fprintf(stdout,   "       # #             #                 #          \\___/   \n");
+     fprintf(stdout,   "        #              ###################                   \n\n");
    }
    else 
    {
