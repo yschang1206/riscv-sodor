@@ -4,7 +4,7 @@
 # Yunsup Lee (yunsup@cs.berkeley.edu)
 #
 
-XLEN ?= 64
+XLEN ?= 32
 
 default: all
 
@@ -18,18 +18,7 @@ instbasedir = $(UCB_VLSI_HOME)/install
 #--------------------------------------------------------------------
 
 bmarks = \
-	median \
-	qsort \
-	rsort \
-	towers \
-	vvadd \
-	multiply \
-	mm \
-	dhrystone \
-	spmv \
-	mt-vvadd \
-	mt-matmul \
-	pmp \
+	rand_and_search \
 
 #--------------------------------------------------------------------
 # Build rules
