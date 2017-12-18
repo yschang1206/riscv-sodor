@@ -133,6 +133,18 @@ class DatPath(implicit conf: SodorConfiguration) extends Module
 
    val alu_shamt = alu_op2(4,0).toUInt
 
+   def lfsr (a :UInt, b :UInt): UInt = {
+       var d = b >> 27
+       var b2 = b
+       var y = (a & b).toUInt
+       var z = UInt(0)
+       for(i <- 0 to 26) {z = (z ^ (y >> i)).toUInt}
+       z = z & UInt(1)
+       z = z << d
+       z = (z | (a>>1)).toUInt
+       z
+   }
+
    alu_out := MuxCase(0.U, Array(
                   (io.ctl.alu_fun === ALU_ADD)  -> (alu_op1 + alu_op2).toUInt,
                   (io.ctl.alu_fun === ALU_SUB)  -> (alu_op1 - alu_op2).toUInt,
@@ -144,7 +156,8 @@ class DatPath(implicit conf: SodorConfiguration) extends Module
                   (io.ctl.alu_fun === ALU_SLL)  -> ((alu_op1 << alu_shamt)(conf.xprlen-1, 0)).toUInt,
                   (io.ctl.alu_fun === ALU_SRA)  -> (alu_op1.toSInt >> alu_shamt).toUInt,
                   (io.ctl.alu_fun === ALU_SRL)  -> (alu_op1 >> alu_shamt).toUInt,
-                  (io.ctl.alu_fun === ALU_COPY1)-> alu_op1
+                  (io.ctl.alu_fun === ALU_COPY1)-> alu_op1,
+                  (io.ctl.alu_fun === ALU_LFSR) -> lfsr(alu_op1, alu_op2)
                   ))
 
    // Branch/Jump Target Calculation
