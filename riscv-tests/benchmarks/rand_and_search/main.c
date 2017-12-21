@@ -49,7 +49,7 @@ int32_t search_0(int32_t *a, int32_t len, int32_t target)
 	return -1;
 }
 
-#define NUM_SRCS 23
+#define NUM_SRCS 223
 #define NUM_TGTS 10
 int32_t srcs_c[NUM_SRCS], srcs_asm[NUM_SRCS];
 int32_t tgts[NUM_TGTS] = {94, 300, 129, 246, 0, 2, 104, 256, 123, 65};
