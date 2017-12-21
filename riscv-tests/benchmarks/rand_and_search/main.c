@@ -91,7 +91,7 @@ int main(void)
 	printf("Comparing your rand() result with golden result\n");
 	if (compare(srcs_c, srcs_asm, NUM_SRCS, "rand") != 0) {
 		printf("Your rand() is wrong\n");
-		return 1;
+		return 2;
 	} else {
 		printf("Your rand() is correct, cycle count = %lu\n\n", (long)(n - m));
 	}
@@ -104,7 +104,7 @@ int main(void)
 	printf("Comparing your search() result with golden result\n");
 	if (compare(idxes_c, idxes_asm, NUM_TGTS, "search") != 0) {
 		printf("Your search() is wrong\n");
-		return 1;
+		return 2;
 	} else {
 		printf("Your search() is correct, cycle count = %lu\n\n", (long)(n - m));
 	}
