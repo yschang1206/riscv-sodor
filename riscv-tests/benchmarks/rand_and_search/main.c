@@ -14,6 +14,7 @@
 
 /**
  * RAND_VER
+ * 0: implement in main.c
  * 1: implement in rand_1.S
  * 2: implement in rand_2.S
  * 3: implement in rand_3.S
@@ -22,6 +23,7 @@
 
 /**
  * SEARCH_VER
+ * 0: implement in main.c
  * 1: implement in search_1.S
  * 2: implement in search_2.S
  * 3: implement in search_3.S

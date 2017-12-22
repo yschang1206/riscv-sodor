@@ -85,3 +85,9 @@ install-link:
 
 clean:
 	rm -rf $(objs) $(junk)
+
+run-1stage:
+	rv32_1stage-emulator +max-cycles=10000000 +loadmem=./rand_and_search.riscv 2>/dev/null
+
+run-5stage:
+	rv32_5stage-emulator +max-cycles=10000000 +loadmem=./rand_and_search.riscv 2>/dev/null
