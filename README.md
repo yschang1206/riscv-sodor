@@ -1,33 +1,41 @@
 ## Build Sodor Emulators
 
 ```
-git clone XXX pa4
-cd pa4/riscv-fesvr
+cd riscv-fesvr
 mkdir build && cd build
-../configure --prefix=/usr/riscv
+../configure
 make
 cd ../../
-./configure --with-riscv=/usr/riscv
+./configure
 make
 ```
 
-Test whether the emulators are built successfully,
+Test whether these emulators are built successfully,
 
 ```
 make run-emulator
 ```
 
-## Run a Benchmark
+## Compile and Run a Benchmark
+
+```
+cd riscv-tests/benchmarks/
+```
+
+Compile a benchmark,
+
+```
+make
+```
 
 Run a benchmark program on the 1-stage emulator,
 
 ```
-./emulator/rv32_1stage/emulator +max-cycles=10000000 +verbose +loadmem=/path/to/benchmark.riscv 3>&1 1>&2 2>&3 | /usr/riscv/bin/spike-dasm
+make run-1stage
 ```
 
 Run a benchmark program on the 5-stage emulator,
 
 ```
-./emulator/rv32_5stage/emulator +max-cycles=10000000 +verbose +loadmem=/path/to/benchmark.riscv 3>&1 1>&2 2>&3 | /usr/riscv/bin/spike-dasm
+make run-5stage
 ```
-
